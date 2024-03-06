@@ -4,6 +4,8 @@ import Main from "../components/Main.astro";
 import PostList from "../components/PostList.astro";
 import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
+import Pagination from "../components/Pagination.astro";
+
 
 const posts = (await getCollection("posts")).slice(0, 6);
 ---
@@ -14,6 +16,12 @@ const posts = (await getCollection("posts")).slice(0, 6);
     <p class="text-zinc-900 text-2xl mb-24 max-sm:mb-14">
       Join the community and learn from Music Producers and Enthusiasts
     </p>
+    <div class="mb-12">
+      <Pagination nextUrl='/blog/2' />
+    </div>
     <PostList posts={posts} />
+    <div class="mb-36">
+      <Pagination nextUrl='/blog/2' />
+    </div>
   </Main>
 </Layout>
