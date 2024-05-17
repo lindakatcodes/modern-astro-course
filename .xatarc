@@ -1,0 +1,6 @@
+{
+  "databaseURL": "https://Linda-Thompson-s-workspace-7iahsn.us-east-1.xata.sh/db/astro-course-demo",
+  "codegen": {
+    "output": "src/xata.ts"
+  }
+}
