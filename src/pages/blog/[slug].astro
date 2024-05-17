@@ -8,13 +8,14 @@ import { getEntryBySlug } from "astro:content";
 import CommentForm from "../../components/CommentForm.astro";
 import { XataClient } from "../../xata";
 import CommentList from "../../components/CommentList.astro";
+import EmojiReactions from "../../components/EmojiReactions.svelte";
+import { getReactionsDetailsByPost } from "../../utils/EmojiHelpers";
 
 const { slug } = Astro.params;
 const xata = new XataClient({ apiKey: import.meta.env.XATA_API_KEY });
+const user = Astro.cookies.get("userId");
 
 if (Astro.request.method === "POST") {
-  const user = Astro.cookies.get("userId");
-
   if (!user?.value) {
     return Astro.redirect("/login");
   }
@@ -39,6 +40,11 @@ const comments = await xata.db.comments
   .select(["id", "text", "date", "user.name"])
   .filter({ post: slug })
   .getMany();
+
+const reactionsDetails = await getReactionsDetailsByPost(
+  post.slug,
+  user?.value
+);
 
 const { Content, headings } = await post.render();
 ---
@@ -67,6 +73,7 @@ const { Content, headings } = await post.render();
         <Content />
       </div>
     </div>
+    <EmojiReactions post={slug as string} {reactionsDetails} client:visible />
   </Main>
   <div
     class="bg-teal-100/30 py-14 px-24 relative border-b border-teal-900 mt-44"
